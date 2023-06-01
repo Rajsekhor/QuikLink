@@ -50,7 +50,7 @@ module.exports.create = (req, res) => {
         if (err) { console.log('error in finding user'); return; }
         if (!user) {
             User.create(req.body, (err, user) => {
-                if (err) { console.log('error in finding user'); return; }
+                if (err) { console.log('error in finding user ' ,err); return; }
 
                 res.redirect('/users/sign-in');
             });
@@ -63,6 +63,7 @@ module.exports.create = (req, res) => {
 
 //sign in and create session for user
 module.exports.createSession = (req, res) => {
+    req.flash('success','Logged in Successfully');
     res.redirect('/');
 };
 
@@ -72,6 +73,7 @@ module.exports.destroySession = function (req, res) {
       if (error) {
         return next(error);
       }
+      req.flash('success','You have logged out!');
       return res.redirect("/");
     });
   };
