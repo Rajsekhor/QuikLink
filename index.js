@@ -65,15 +65,11 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(flash());
+app.use(customMware.setFlash);
 
-app.use((req, res, next) => {
-  res.locals.flashMessages = req.flash();
-  next();
-});
 
 app.use(passport.setAuthenticatedUser);
 
-app.use(customMware.setFlash);
 
 // use express router.
 app.use("/", require("./routes/index.js"));
