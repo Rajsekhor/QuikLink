@@ -14,6 +14,7 @@ const MongoStore = require("connect-mongo");
 const sassMiddleware = require("node-sass-middleware");
 const flash = require("connect-flash");
 const customMware = require("./config/middleware");
+// const passportJWT = require("./config/passport-jwt-strategy");
 
 // using the sass middleware
 app.use(
