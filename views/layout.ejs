@@ -14,6 +14,13 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" 
+      integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" 
+      crossorigin="anonymous" 
+      referrerpolicy="no-referrer">
+    </script>
+
     <link rel="stylesheet" href="/css/layout.css" />
     <link rel="stylesheet" href="/css/header.css" />
     <link rel="stylesheet" href="/css/footer.css" />
@@ -40,7 +47,7 @@
             text: "<%= flash.success %>",
             type: "success",
             layout: "topRight",
-            timeout: 15000
+            timeout: 1500
         }).show();
       <% } %>
       <% if(flash.error && flash.error.length > 0){ %>
@@ -49,7 +56,7 @@
             text: "<%= flash.error %>",
             type: "error  ",
             layout: "topRight",
-            timeout: 15000
+            timeout: 1500
         }).show();
       <% } %>
     </script>
