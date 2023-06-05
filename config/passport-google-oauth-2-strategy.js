@@ -7,8 +7,8 @@ passport.use(
   new googleStrategy(
     {
       clientID:
-        "<Your Google Client ID", //Change this to your google Client Id for the application to work
-      clientSecret: "<Your Google Client Secret>",  //Change this to your google Client Secret for the application to work
+        "******************",
+      clientSecret: "*************",
       callbackURL: "http://localhost:8000/users/auth/google/callback",
     },
     function (accessToken, refreshToken, profile, done) {

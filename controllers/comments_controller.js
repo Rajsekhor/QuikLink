@@ -1,5 +1,6 @@
 const Comment = require("../models/comment");
 const Post = require("../models/post");
+const commentsMailer = require('../mailers/comments_mailer');
 
 // module.exports.create = function (req, res) {
 //   Post.findById(req.body.post, function (error, post) {
@@ -50,6 +51,8 @@ module.exports.create = async function (req, res) {
       post.comments.push(comment);
       post.save();
       req.flash("success","Comment published!");
+      comment = await comment.populate('user', 'name email');
+      commentsMailer.newComment(comment);
       res.redirect("/");
     }
     else {
