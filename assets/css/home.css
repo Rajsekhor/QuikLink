@@ -6,7 +6,7 @@ body {
   #home-container #feed-posts {
     width: 70%;
     padding: 10px; }
-  #home-container #user-friends {
+  #home-container #user-all {
     width: 30%;
     padding: 10px;
     border-left: 1px solid lightgray;

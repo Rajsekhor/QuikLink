@@ -1,5 +1,6 @@
 const Post = require("../models/post");
 const User = require("../models/user");
+const Friendship = require('../models/friendship');
 
 //  module.exports.home = function (request, response) {
 //   console.log("Home controller action is working");
@@ -34,14 +35,21 @@ module.exports.home=async function(req,res){
       populate:{
         path:'user'
       }
-    });
+    }).populate({
+      path: 'comments',
+      populate: {
+          path: 'likes'
+      }
+  }).populate('likes');
 
     let users=await User.find({});
+    let allFriends=await Friendship.find({});
 
     return res.render('home',{
       title:"QuikLink | Home",
       posts:posts,
-      all_users:users
+      all_users:users,
+      allFriends:allFriends
     })
   }catch(err){
     console.log("Error",err);

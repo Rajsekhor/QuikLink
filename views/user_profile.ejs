@@ -22,4 +22,17 @@
         </p>
         <p>Email: <%= profile_user.email %>
         </p>
+        <% if(friendstatus){ %>
+            <form action="/friends/removeFriend" method="post">
+                <input type="hidden" name="fromUserId" value="<%=user.id%>">
+                <input type="hidden" name="toUserId" value="<%=profile_user.id%>">
+                <input type="submit" value="Remove Friend">
+            </form>
+            <% }else{ %>
+                <form action="/friends/addFriend" method="post">
+                    <input type="hidden" name="fromUserId" value="<%=user.id%>">
+                    <input type="hidden" name="toUserId" value="<%=profile_user.id%>">
+                    <input type="submit" value="Add Friend">
+                </form>
+            <% } %>
         <% } %>

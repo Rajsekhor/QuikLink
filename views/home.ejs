@@ -1,35 +1,67 @@
 <link rel="stylesheet" href="/css/home.css" />
-<h1> <%= title %>
+<h1>
+  <%= title %>
 </h1>
 <div id="home-container">
   <section id="feed-posts">
     <% if(locals.user){ %>
-    <h4>Posts</h4>
-    <form action="/posts/create" id="new-post-form" method="post">
-      <textarea
-      name="content"
-        cols="30"
-        rows="3"
-        placeholder="Type here..."
-        required
-      ></textarea>
-      <input type="submit" value="Post" />
-    </form>
-    <% } %>
-    <div id="posts-list-container">
-      <ul style="list-style: none;">
-        <% for(post of posts) { %> <%- include("_post") -%> <% } %>
-      </ul>
-    </div>
+      <h4>Posts</h4>
+      <form action="/posts/create" id="new-post-form" method="post">
+        <textarea name="content" cols="30" rows="3" placeholder="Type here..." required></textarea>
+        <input type="submit" value="Post" />
+      </form>
+      <% } %>
+        <div id="posts-list-container">
+          <ul style="list-style: none;">
+            <% for(post of posts) { %> <%- include("_post") -%>
+                <% } %>
+          </ul>
+        </div>
   </section>
 
-  <section id="user-friends">
-    <h4>Friends</h4>
+  <section id="user-all">
+    <h4>All Users</h4>
     <% for(u of all_users){ %>
-    <p>
-      <a href="/users/profile/<%= u.id %>"><%= u.name %></a>
-    </p>
-    <% } %>
+      <p>
+        <% if(!locals.user){ %>
+          <a href="/users/profile/<%= u.id %>/">
+        <% }else{ %>
+            <a href="/users/profile/<%= u.id %>/<%=locals.user._id%>">
+        <% } %>
+          <%= u.name %>
+        </a>
+      </p>
+      <% } %>
   </section>
+  <% if(!locals.user){ %>
+    <p>Sign in to see your friends</p>
+    <% }else{ %>
+    <section id="user-friends">
+      <h4>Friends</h4>
+      <% for(u of all_users){ %>
+        <% for(let i of allFriends){ %>
+          <% if(u.id==i.to_user){ %>
+            <p>
+              <% if(!locals.user){ %>
+                <a href="/users/profile/<%= u.id %>/">
+              <% }else{ %>
+                  <a href="/users/profile/<%= u.id %>/<%=locals.user._id%>">
+              <% } %>
+                <%= u.name %>
+              </a>
+            </p>
+          <% } %>
+        <% } %>
+      <% } %> 
+    </section>
+  <% } %>
 </div>
-      <script src="/js/home_posts.js"></script>
+<script src="/js/home_posts.js"></script>
+<script src="/js/home_posts.js"></script>
+<script src="/js/toggle_likes.js"></script>
+<script>
+  $('.toggle-like-button').each(function () {
+    let self = this;
+    let toggleLike = new ToggleLike(self);
+  });
+</script>

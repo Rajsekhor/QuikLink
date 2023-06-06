@@ -1,15 +1,66 @@
 const User = require('../models/user');
 const fs = require("fs");
 const path = require("path");
+const Friendship = require('../models/friendship');
+
+module.exports.profile_plain = function (req, res) {
+  User.findById(req.params.id, function (error, user) {
+    return res.render("user_profile", {
+      title: "User Profile",
+      profile_user: user
+    });
+  });
+};
+
+// module.exports.profile = function (req, res) {
+//   let query=false;
+//   User.findById(req.params.id,function(error,user){
+//     if (error) {
+//             console.log("Error: ", error);
+//             return res.redirect("/");
+//           }
+//   })
+//   console.log(user.friendships);
+//   Friendship.findById(user.friendships, function(error,friendtemp){
+//     for(let singleFriendship in friendtemp){
+//       console.log(singleFriendship," : ",friendtemp[singleFriendship])
+//     }
+//   })
+
+//   User.findById(req.params.id, function (error, user) {
+//     return res.render("user_profile", {
+//       title: "User Profile",
+//       profile_user: user
+//     });
+//   });
+// };
 
 module.exports.profile = function (req, res) {
-    User.findById(req.params.id, function (error, user) {
+  let friendstatus=false;
+  User.findById(req.params.id, function (error, user) {
+    if (error) {
+      console.log("Error: ", error);
+      return res.redirect("/");
+    }
+    Friendship.findById(user.friendships, function (error, friendtemp) {
+      if (error) {
+        console.log("Error: ", error);
+        return res.redirect("/");
+      }
+      if(!friendtemp){
+        friendstatus=false;
+      }else{
+        friendstatus=true;
+      }
+
       return res.render("user_profile", {
         title: "User Profile",
-        profile_user: user
+        profile_user: user,
+        friendstatus:friendstatus,
       });
     });
-  };
+  });
+};
   
   // module.exports.update = function(req,res){
   //   if(req.user.id == req.params.id){
