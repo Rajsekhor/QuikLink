@@ -8,8 +8,8 @@ let transporter=nodemailer.createTransport({
     post:587,
     secure:false,
     auth:{
-        user:'***************',
-        pass:'*****************'
+        user:'*************',
+        pass:'**********'
     }
 });
 
