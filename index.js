@@ -16,27 +16,31 @@ const flash = require("connect-flash");
 const customMware = require("./config/middleware");
 // const passportJWT = require("./config/passport-jwt-strategy");
 const passportGoogle = require("./config/passport-google-oauth-2-strategy");
-require('dotenv').config()
+const env = require('./config/environment');
+const logger=require('morgan')
+require("./config/view_helper")(app);
+const path=require('path')
 
+console.log(env.name)
 
-// using the sass middleware
-app.use(
-  sassMiddleware({
-    src: "./assets/scss",
-    dest: "./assets/css",
-    debug: true,
-    outputStyle: "extended",  
-    prefix: "/css",
-  })
-);
+if(env.name=='development'){
+  app.use(sassMiddleware({
+    src:path.join(__dirname,env.asset_path,'scss'),
+    dest:path.join(__dirname,env.asset_path,'css'),
+    debug:true,
+    outputStyle:'expanded',
+    prefix:'/css'
+  }))
+}
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static("./assets"));
+app.use(express.static(__dirname+env.asset_path));
 
 app.use(expressLayouts);
 
 app.use("/uploads",express.static(__dirname + "/uploads"));
+app.use(logger(env.morgan.mode, env.morgan.options));
 
 // extract style and scripts from sub pages into the layout
 app.set("layout extractStyles", true);
@@ -52,7 +56,7 @@ app.use(
   session({
     name: "quiklink",
     // TODO change the secret before deployment in production mode
-    secret: "blasomething",
+    secret: env.session_cookie_key,
     saveUninitialized: false,
     resave: false,
     cookie: {

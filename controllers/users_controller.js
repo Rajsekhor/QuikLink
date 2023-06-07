@@ -12,55 +12,50 @@ module.exports.profile_plain = function (req, res) {
   });
 };
 
-// module.exports.profile = function (req, res) {
-//   let query=false;
-//   User.findById(req.params.id,function(error,user){
-//     if (error) {
-//             console.log("Error: ", error);
-//             return res.redirect("/");
-//           }
-//   })
-//   console.log(user.friendships);
-//   Friendship.findById(user.friendships, function(error,friendtemp){
-//     for(let singleFriendship in friendtemp){
-//       console.log(singleFriendship," : ",friendtemp[singleFriendship])
-//     }
-//   })
 
-//   User.findById(req.params.id, function (error, user) {
-//     return res.render("user_profile", {
-//       title: "User Profile",
-//       profile_user: user
-//     });
-//   });
-// };
+module.exports.profile = async function (req, res) {
+  try {
+    let friendstatus = false;
+    let currentId = req.params.id;
+    let currentUser = req.params.user;
 
-module.exports.profile = function (req, res) {
-  let friendstatus=false;
-  User.findById(req.params.id, function (error, user) {
-    if (error) {
-      console.log("Error: ", error);
+    let user = await User.findById(req.params.id).exec();
+    if (!user) {
+      console.log("User not found");
       return res.redirect("/");
     }
-    Friendship.findById(user.friendships, function (error, friendtemp) {
-      if (error) {
-        console.log("Error: ", error);
-        return res.redirect("/");
-      }
-      if(!friendtemp){
-        friendstatus=false;
-      }else{
-        friendstatus=true;
-      }
 
+    if (user.friendships.length === 0) {
       return res.render("user_profile", {
         title: "User Profile",
         profile_user: user,
-        friendstatus:friendstatus,
+        friendstatus: friendstatus,
       });
+    }
+
+    for (let i = 0; i < user.friendships.length; i++) {
+      let friendtemp = await Friendship.findById(user.friendships[i]).exec();
+
+      if (friendtemp && friendtemp.to_user == currentId && friendtemp.from_user == currentUser) {
+        friendstatus = true;
+        console.log("Inside if condition: ", friendstatus);
+        break;
+      }
+    }
+
+    console.log("Outside if condition: ", friendstatus);
+    return res.render("user_profile", {
+      title: "User Profile",
+      profile_user: user,
+      friendstatus: friendstatus,
     });
-  });
+  } catch (error) {
+    console.log("Error: ", error);
+    return res.redirect("/");
+  }
 };
+
+
   
   // module.exports.update = function(req,res){
   //   if(req.user.id == req.params.id){
