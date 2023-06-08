@@ -36,7 +36,7 @@ class PostComments {
                     $(`#post-comments-${postId}`).prepend(newComment);
                     pSelf.deleteComment($(' .delete-comment-button', newComment));
                     
-                    new ToggleLike($('.toggle-like-button', newPost))
+                    new ToggleLike($('.toggle-like-button', newComment))
                     new Noty({
                         theme: 'relax',
                         text: "Comment published!",
@@ -67,7 +67,7 @@ class PostComments {
                             
                             ${comment.content}
                             <small>
-                                <a id="like-button" class="toggle-like-button" data-likes="0" href="/likes/toggle/?id=${comment._id}&type=Post">0 <i class="fa fa-thumbs-up">like</i></a>
+                                <a id="like-button" class="toggle-like-button" data-likes="0" href="/likes/toggle/?id=${comment._id}&type=Comment">0 <i class="fa fa-thumbs-up">like</i></a>
                             </small>
                             <br>
                             <small>
@@ -80,7 +80,9 @@ class PostComments {
 
 
     deleteComment(deleteLink) {
+        console.log("Inside Delete",deleteLink)
         $(deleteLink).click(function (e) {
+            console.log("Inside Delete e",e)
             e.preventDefault();
 
             $.ajax({
