@@ -13,8 +13,7 @@ async function addFriend(req, res) {
     // Check if the users are already friends
     const existingFriendship = await Friendship.findOne({
       $or: [
-        { from_user: fromUserId, to_user: toUserId },
-        { from_user: toUserId, to_user: fromUserId },
+        { from_user: fromUserId, to_user: toUserId }
       ],
     });
 
