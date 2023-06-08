@@ -47,7 +47,7 @@
             text: "<%= flash.success %>",
             type: "success",
             layout: "topRight",
-            timeout: 1000
+            timeout: 750
         }).show();
       <% } %>
       <% if(flash.error && flash.error.length > 0){ %>
@@ -56,7 +56,7 @@
             text: "<%= flash.error %>",
             type: "error  ",
             layout: "topRight",
-            timeout: 1000
+            timeout: 750
         }).show();
       <% } %>
     </script>

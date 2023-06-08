@@ -1,26 +1,26 @@
 <link rel="stylesheet" href="/css/header.css">
 <header id="layout-header">
-    <nav>
+    <nav id="navbar">
         <div class="mini-logo">
             <p>
-                <a href="/">QuikLink</a>
+                <a href="/"><img src="/images/QuikLink_Logo_Final.png" id="logo"> </a>
             </p>
         </div>
-        <div class="auth-links">
-            <ul>
+        <div id="auth-links">
+            <ul id="nav-links">
                 <% if (locals.user){ %>
-                    <li>
+                    <li id="nav-link-1">
                         <a id="username-header" href="/users/profile"><%= user.name %></a>
                     </li>
                     
-                    <li>
+                    <li id="nav-link-2">
                         <a href="/users/sign-out">Sign Out</a>
                     </li>
                 <%} else{ %>
-                    <li>
+                    <li id="nav-link-1">
                         <a href="/users/sign-in">Sign In</a>
                     </li>
-                    <li>
+                    <li id="nav-link-2">
                         <a href="/users/sign-up">Sign Up</a>
                     </li>
                 <% } %>

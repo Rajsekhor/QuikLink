@@ -1,8 +1,32 @@
-nav{
+:root{
+    --primary-color:#F9F7F7;
+    --secondary-color:#3F72AF;
+}
+
+#navbar{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    background-color: rgb(170,170,170);
+    background-color: var(--primary-color);
     color:black;
-    padding:2dvh 1.5dvw;
+    padding:1dvh 2dvw;
+    // position: fixed;
+    // width: 100dvw;
+    box-shadow: 0 0 5px 2.5px var(--secondary-color);
+}
+
+#logo{
+    width:50px;
+    height:auto;
+}
+
+nav-links{
+    display: flex;
+    flex-direction: row;
+    list-style: none;
+    padding:0;
+}
+
+#nav-link-2{
+    margin:0 4dvh 0 0;
 }
