@@ -12,6 +12,8 @@ router.post("/update/:id",passport.checkAuthentication ,usersController.update);
 router.get('/sign-up', usersController.signUp);
 router.get('/sign-in', usersController.signIn);
 router.post('/create', usersController.create);
+router.post('/forgot', usersController.forgot);
+router.get('/forgot-page', usersController.forgot_nav);
 
 router.post('/create-session', passport.authenticate(
     'local',

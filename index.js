@@ -21,13 +21,13 @@ const logger=require('morgan')
 require("./config/view_helper")(app);
 const path=require('path')
 
-console.log(env.name)
+console.log(`The server is running in ${env.name} mode`)
 
 if(env.name=='development'){
   app.use(sassMiddleware({
     src:path.join(__dirname,env.asset_path,'scss'),
     dest:path.join(__dirname,env.asset_path,'css'),
-    debug:true,
+    debug:false,
     outputStyle:'expanded',
     prefix:'/css'
   }))

@@ -1,6 +1,8 @@
 const Post = require("../models/post");
 const Comment = require("../models/comment");
 const Like = require("../models/like");
+const queue=require('../config/kue')
+const postEmailWorker = require("../workers/post_email_worker");
 
 module.exports.create = async function (req, res) {
   try {
@@ -9,9 +11,16 @@ module.exports.create = async function (req, res) {
       user: req.user._id,
     });
 
+    post = await post.populate("user", "name email");
+    let job=queue.create('emails',post).save(function(err){
+      if(err){
+        console.log("Error in sending to the queue",err);
+        return ;
+      }
+      console.log('Job enqueued',job.id);
+    })
+
     if (req.xhr) {
-      // if we want to populate just the name of the user (we'll not want to send the password in the API), this is how we do it!
-      post = await post.populate("user", "name");
 
       return res.status(200).json({
         data: {
