@@ -30,6 +30,7 @@ const Friendship = require('../models/friendship');
 
 module.exports.home=async function(req,res){
   try{
+    let users = await User.find({}).select('name email _id');
     let posts=await Post.find({}).populate('user').populate({
       path:"comments",
       populate:{
@@ -42,13 +43,14 @@ module.exports.home=async function(req,res){
       }
   }).populate('likes');
 
-    let users=await User.find({});
+    let user=await User.find({});
     let allFriends=await Friendship.find({});
 
     return res.render('home',{
       title:"QuikLink | Home",
       posts:posts,
-      all_users:users,
+      all_users:user,
+      users:users,
       allFriends:allFriends
     })
   }catch(err){

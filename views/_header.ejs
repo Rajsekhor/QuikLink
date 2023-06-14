@@ -6,11 +6,27 @@
                 <a href="/"><img src="/images/QuikLink_Logo_Final.png" id="logo"> </a>
             </p>
         </div>
+        <div id="search-bar">
+            <div class="search-wrapper">
+                <label for="search-user">Search</label>
+                <input type="search" id="search" data-search/>
+            </div>
+            <div class="user-cards hide" data-user-cards-container>
+                <template data-user-template> 
+                    <div class="card">
+                        <div class="header" data-header>
+                        </div>
+                        <div class="body" data-body>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
         <div id="auth-links">
             <ul id="nav-links">
                 <% if (locals.user){ %>
                     <li id="nav-link-1">
-                        <a id="username-header" href="/users/profile"><%= user.name %></a>
+                        <a id="username-header" href="/users/profile/<%=locals.user._id%>"><%= user.name %></a>
                     </li>
                     
                     <li id="nav-link-2">
@@ -28,3 +44,7 @@
         </div>
     </nav>
 </header>
+<script>
+    let users = `<%=users%>`;
+</script>
+<script src="/js/search-bar.js"></script>

@@ -8,6 +8,7 @@
 <img src="<%= profile_user.avatar %>" alt="<%= profile_user.name %>" width="200px">
 
 
+
 <% if(user.id==profile_user.id){ %>
     <!-- if user matches then show the form  -->
     <form action="/users/update/<%= profile_user.id %>" enctype="multipart/form-data" method="post">
@@ -34,5 +35,5 @@
                     <input type="hidden" name="toUserId" value="<%=profile_user.id%>">
                     <input type="submit" value="Add Friend">
                 </form>
-            <% } %>
-        <% } %>
+                <% } %>
+                    <% } %>
