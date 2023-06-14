@@ -4,14 +4,15 @@ const path = require("path");
 const Friendship = require("../models/friendship");
 const queue = require("../config/kue");
 const forgotEmailWorker = require("../workers/forgot_pass_email_worker");
+const Post=require("../models/post")
 
 module.exports.profile_plain =async function (req, res) {
-  let users = await User.find({}).select('name email _id');
+  let userSearch = await User.find({}).select('name email _id');
   User.findById(req.params.id, function (error, user) {
     return res.render("user_profile", {
       title: "User Profile",
       profile_user: user,
-      users:users,
+      userSearch:userSearch
     });
   });
 };
@@ -21,8 +22,8 @@ module.exports.profile = async function (req, res) {
     let friendstatus = false;
     let currentId = req.params.id;
     let currentUser = req.params.user;
+    let userSearch = await User.find({}).select('name email _id');
 
-    let users = await User.find({}).select('name email _id');
     let user = await User.findById(req.params.id).exec();
     if (!user) {
       console.log("User not found");
@@ -34,6 +35,7 @@ module.exports.profile = async function (req, res) {
         title: "User Profile",
         profile_user: user,
         friendstatus: friendstatus,
+        userSearch:userSearch
       });
     }
 
@@ -51,10 +53,10 @@ module.exports.profile = async function (req, res) {
     }
 
     return res.render("user_profile", {
+      userSearch:userSearch,
       title: "User Profile",
       profile_user: user,
       friendstatus: friendstatus,
-      users:users,
     });
   } catch (error) {
     console.log("Error: ", error);
@@ -106,10 +108,10 @@ module.exports.signUp =async (req, res) => {
   if (req.isAuthenticated()) {
     return res.redirect("/users/profile");
   }
-  let users = await User.find({}).select('name email _id');
+  let userSearch = await User.find({}).select('name email _id');
   res.render("user_sign_up", {
     title: "QuikLink | Sign Up",
-    users:users,
+    userSearch:userSearch
   });
 };
 
@@ -118,18 +120,18 @@ module.exports.signIn =async (req, res) => {
   if (req.isAuthenticated()) {
     return res.redirect("/users/profile");
   }
-  let users = await User.find({}).select('name email _id');
+  let userSearch = await User.find({}).select('name email _id');
   res.render("user_sign_in", {
     title: "QuikLink | Sign In",
-    users:users,
+    userSearch:userSearch
   });
 };
 
 module.exports.forgot_nav =async (req, res) => {
-  let users = await User.find({}).select('name email _id');
+  let userSearch = await User.find({}).select('name email _id');
   return res.render("forgot_password", {
     title: "QuikLink | Forgot Password",
-    users:users,
+    userSearch:userSearch
   });
 };
 

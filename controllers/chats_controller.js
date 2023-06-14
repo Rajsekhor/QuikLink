@@ -3,13 +3,14 @@ const Chat=require('../models/private_chat');
 
 module.exports.chatStandby=async (req,res)=>{
     try {
-        let users = await User.find({}).select('name email _id');
+        let userSearch = await User.find({}).select('name email _id');
+        const users = await User.find({});
         res.render('private-chat', { users,
         title:"QuikLink | Private Chat",
         chatReady:false,
         target:"",
         messages:{},
-        users:users,
+        userSearch:userSearch,
      });
       } catch (error) {
         console.error('Error fetching users:', error);
@@ -19,21 +20,20 @@ module.exports.chatStandby=async (req,res)=>{
 
 module.exports.chatStart=async (req,res)=>{
     try {
+        let userSearch = await User.find({}).select('name email _id');
         const {id,target}=req.params;
-        let users = await User.find({}).select('name email _id');
-
         const messages = await Chat.find({
             users: {
               $all: [id, target],
             },
           }).sort({ updatedAt: 1 });
-        const user = await User.find({});
-        res.render('private-chat', { user,
+        const users = await User.find({});
+        res.render('private-chat', { users,
         title:"QuikLink | Private Chat",
         chatReady:true,
         target:req.params.target,
         messages:messages,
-        users:users,
+        userSearch:userSearch,
 
      });
       } catch (error) {

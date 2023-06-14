@@ -6,45 +6,58 @@
                 <a href="/"><img src="/images/QuikLink_Logo_Final.png" id="logo"> </a>
             </p>
         </div>
-        <div id="search-bar">
-            <div class="search-wrapper">
-                <label for="search-user">Search</label>
-                <input type="search" id="search" data-search/>
-            </div>
-            <div class="user-cards hide" data-user-cards-container>
-                <template data-user-template> 
-                    <div class="card">
-                        <div class="header" data-header>
+        <% if(locals.user) {%>
+            <div id="search-bar">
+                <div class="search-wrapper">
+                    <label for="search-user">Search</label>
+                    <input type="search" id="search" data-search />
+                </div>
+                <div class="user-cards hide" data-user-cards-container>
+                    <template data-user-template>
+                        <div class="card">
+                            <a id="" href="" profile-link>
+                                <div class="header" data-header>
+                                </div>
+                                <div class="body" data-body>
+                                </div>
+                            </a>
                         </div>
-                        <div class="body" data-body>
-                        </div>
-                    </div>
-                </template>
+                    </template>
+                </div>
             </div>
-        </div>
-        <div id="auth-links">
-            <ul id="nav-links">
-                <% if (locals.user){ %>
-                    <li id="nav-link-1">
-                        <a id="username-header" href="/users/profile/<%=locals.user._id%>"><%= user.name %></a>
-                    </li>
-                    
-                    <li id="nav-link-2">
-                        <a href="/users/sign-out">Sign Out</a>
-                    </li>
-                <%} else{ %>
-                    <li id="nav-link-1">
-                        <a href="/users/sign-in">Sign In</a>
-                    </li>
-                    <li id="nav-link-2">
-                        <a href="/users/sign-up">Sign Up</a>
-                    </li>
-                <% } %>
-            </ul>
-        </div>
+            <% } %>
+                <div id="auth-links">
+                    <ul id="nav-links">
+                        <% if (locals.user){ %>
+                            <li id="nav-link-1">
+                                <a id="username-header" href="/users/profile/<%=locals.user._id%>">
+                                    <%= user.name %>
+                                </a>
+                            </li>
+
+                            <li id="nav-link-2">
+                                <a href="/users/sign-out">Sign Out</a>
+                            </li>
+                            <%} else{ %>
+                                <li id="nav-link-1">
+                                    <a href="/users/sign-in">Sign In</a>
+                                </li>
+                                <li id="nav-link-2">
+                                    <a href="/users/sign-up">Sign Up</a>
+                                </li>
+                                <% } %>
+                    </ul>
+                </div>
     </nav>
 </header>
 <script>
-    let users = `<%=users%>`;
-</script>
+    let localUser; // Declare the userId variable
+    let userSearch = `<%= userSearch %>`;
+  
+    <% if (locals.user) { %>
+      localUser = '<%= locals.user._id %>'; // Assign value to userId
+    <% } %>
+  </script>
+  
+  
 <script src="/js/search-bar.js"></script>
