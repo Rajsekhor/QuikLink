@@ -1,0 +1,57 @@
+<% if(locals.user){ %>
+  <h1>User List</h1>
+  <ul>
+    <% users.forEach(function(user) { %>
+      <% if(locals.user.id !=user._id){%>
+        <li>
+          <a href="/chat/private-chat/<%= locals.user._id %>/<%= user._id %>">
+            <%= user.name %>
+          </a>
+        </li>
+        <% } %>
+        <% }); %>
+      </ul>
+      
+      <% if(chatReady){ %>
+        
+        <div id="user-chat-box">
+    <ul id="chat-messages-list">
+    <% messages.forEach(function(message){ %>
+      <% if(message.users[0]==locals.user._id){ %>
+
+        <li class="self-message">
+          <span>
+            <%= message.message.text %>
+          </span>
+        </li>
+      <% }else{ %>
+        <li class="other-message">
+          <span>
+            <%= message.message.text %>
+          </span>
+        </li>
+        <% } %>
+    <% }) %>
+  </ul>
+      <div id="chat-message-input-container">
+        <input id="chat-message-input" placeholder="Type message here">
+        <button id="send-message">Send</button>
+      </div>
+    </div>
+    <% }else{ %>
+      <h1>Click a person to chat</h1>
+      <% } %>
+
+        <% }else{ %>
+          <h1>Sign in to access private chat</h1>
+          <% } %>
+
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.1/socket.io.js"
+              integrity="sha512-xbQU0+iHqhVt7VIXi6vBJKPh3IQBF5B84sSHdjKiSccyX/1ZI7Vnkt2/8y8uruj63/DVmCxfUNohPNruthTEQA=="
+              crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            <script src="/js/private_chat_engine.js"></script>
+            <%if(locals.user){ %>
+              <script>
+                new PrivateChatEngine('user-chat-box', '<%= locals.user.name %>', '<%= locals.user._id %>', '<%= target %>');
+              </script>
+              <% } %>

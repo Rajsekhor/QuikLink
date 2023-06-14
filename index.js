@@ -86,6 +86,11 @@ const chatSockets = require("./config/chat_sockets").chatSockets(chatServer);
 chatServer.listen(5000);
 console.log("chat server is listening on port 5000");
 
+const privateChatServer = require("http").Server(app);
+const privatechatSockets = require("./config/chat_sockets").chatSockets(privateChatServer);
+privateChatServer.listen(4000);
+console.log("chat server is listening on port 4000");
+
 // use express router.
 app.use("/", require("./routes/index.js"));
 
