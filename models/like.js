@@ -22,6 +22,7 @@ const likeSchema = new mongoose.Schema(
       timestamps: true,
     }
   );
-  
+  likeSchema.index({ createdAt: 1 }, { expireAfterSeconds: 31104000 });
+
   const Like = mongoose.model("Like", likeSchema);
   module.exports = Like;

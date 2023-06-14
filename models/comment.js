@@ -24,7 +24,7 @@ const commentSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
-
+commentSchema.index({ createdAt: 1 }, { expireAfterSeconds: 1814400 });
 const Comment = mongoose.model("Comment",commentSchema);
 
 module.exports = Comment;

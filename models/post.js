@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const { post } = require("../routes");
 
 const postSchema = new mongoose.Schema(
   {
@@ -11,14 +10,13 @@ const postSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
-    // include the array of ids of all comments in this post schema itself
-    comments:[{
+    comments: [{
       type: mongoose.Schema.Types.ObjectId,
       ref: "Comment"
     }],
-    likes:[{
-      type:mongoose.Schema.Types.ObjectId,
-      ref:'Like'
+    likes: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Like'
     }]
   },
   {
@@ -26,5 +24,8 @@ const postSchema = new mongoose.Schema(
   }
 );
 
-const Post = mongoose.model("Post",postSchema);
+// Set TTL index on the createdAt field with a time to live of 24 hours (86400 seconds)
+postSchema.index({ createdAt: 1 }, { expireAfterSeconds: 1814400 });
+
+const Post = mongoose.model("Post", postSchema);
 module.exports = Post;
