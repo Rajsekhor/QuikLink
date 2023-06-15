@@ -3,35 +3,46 @@ const Comment = require("../models/comment");
 const Like = require("../models/like");
 const queue=require('../config/kue')
 const postEmailWorker = require("../workers/post_email_worker");
+const fs = require("fs");
+const path = require("path");
 
 module.exports.create = async function (req, res) {
   try {
-    let post = await Post.create({
-      content: req.body.content,
-      user: req.user._id,
-    });
-
-    post = await post.populate("user", "name email");
-    let job=queue.create('emails',post).save(function(err){
-      if(err){
-        console.log("Error in sending to the queue",err);
-        return ;
+    await Post.uploadedPostImage(req, res, async function (err){
+      if (err) {
+        console.log("Multer Error: ", err);
       }
-      console.log('Job enqueued',job.id);
-    })
-
-    if (req.xhr) {
-
-      return res.status(200).json({
-        data: {
-          post: post,
-        },
-        message: "Post created!",
+      let post = await Post.create({
+        content: req.body.content,
+        user: req.user._id,
       });
-    }
-
-    req.flash("success", "Post published!");
-    return res.redirect("back");
+      if (req.file) {
+        post.postImage = Post.PostImagePath + "/" + req.file.filename;
+      }
+      await post.save();
+  
+      post = await post.populate("user", "name email");
+      let job=queue.create('emails',post).save(function(err){
+        if(err){
+          console.log("Error in sending to the queue",err);
+          return ;
+        }
+        console.log('Job enqueued',job.id);
+      })
+  
+      if (req.xhr) {
+  
+        return res.status(200).json({
+          data: {
+            post: post,
+          },
+          message: "Post created!",
+        });
+      }
+  
+      req.flash("success", "Post published!");
+      return res.redirect("back");
+    })
   } catch (err) {
     req.flash("error", err);
     // added this to view the error on console as well

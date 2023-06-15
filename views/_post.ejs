@@ -1,46 +1,55 @@
 <li id="post-<%= post._id %>">
-    <p>
-        <% if (locals.user && locals.user.id == post.user.id){ %>
-        <small>
-            <a class="delete-post-button" href="/posts/destroy/<%= post.id %>">Delete</a>
-        </small>
-        <% } %>
-        <%= post.content %>
-        <small>
-            <% if (locals.user){ %>
-                <small>
-                    <a id="like-button" class="toggle-like-button" data-likes="<%= post.likes.length %>" href="/likes/toggle/?id=<%=post._id%>&type=Post"><i class="fa fa-thumbs-up"><%= post.likes.length %> Likes</i></a>
-                </small>
-            <% } else { %>
-                <small id="like-button2">
-                    <%=post.likes.length %> Likes
-                </small>
-            <% } %>
-        </small>
-        <br>
-        <small>
-            - <%= post.user.name %>
-        </small>
-    </p>
-    <div class="post-comments">
-        <% if (locals.user){ %>
-            <form id="post-<%= post._id %>-comments-form" action="/comments/create" method="POST">
-                <input type="text" name="content" placeholder="Type Here to add comment..." required>
-                <input type="hidden" name="post" value="<%= post._id %>" >
-                <input type="submit" value="Add Comment">
-            </form>
+  <p>
+    <% if (locals.user && locals.user.id == post.user.id){ %>
+    <small>
+      <a class="delete-post-button" href="/posts/destroy/<%= post.id %>"
+        >Delete</a
+      >
+    </small>
+    <% } %> <% if(post.postImage){ %>
+    <img src="<%= post.postImage %>" alt="Post Image" width="200px" />
+    <% } %> <%= post.content %>
+    <small>
+      <% if (locals.user){ %>
+      <small>
+        <a
+          id="like-button"
+          class="toggle-like-button"
+          data-likes="<%= post.likes.length %>"
+          href="/likes/toggle/?id=<%=post._id%>&type=Post"
+          ><i class="fa fa-thumbs-up"><%= post.likes.length %> Likes</i></a
+        >
+      </small>
+      <% } else { %>
+      <small id="like-button2"> <%=post.likes.length %> Likes </small>
+      <% } %>
+    </small>
+    <br />
+    <small> - <%= post.user.name %> </small>
+  </p>
+  <div class="post-comments">
+    <% if (locals.user){ %>
+    <form
+      id="post-<%= post._id %>-comments-form"
+      action="/comments/create"
+      method="POST"
+    >
+      <input
+        type="text"
+        name="content"
+        placeholder="Type Here to add comment..."
+        required
+      />
+      <input type="hidden" name="post" value="<%= post._id %>" />
+      <input type="submit" value="Add Comment" />
+    </form>
 
-        <% } %>
+    <% } %>
 
-        <div class="post-comments-list">
-            <ul id="post-comments-<%= post._id %>">
-                <% for (comment of post.comments){%>
-
-                    <%- include('_comment') -%>
-                    
-                
-                <%} %>
-            </ul>
-        </div>
-    </div>    
+    <div class="post-comments-list">
+      <ul id="post-comments-<%= post._id %>">
+        <% for (comment of post.comments){%> <%- include('_comment') -%> <%} %>
+      </ul>
+    </div>
+  </div>
 </li>

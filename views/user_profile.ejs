@@ -29,7 +29,7 @@
     value="<%= profile_user.email %>"
     required
   />
-  <input type="file" name="avatar" placeholder="Profile Picture" id="" />
+  <input type="file" name="avatar" placeholder="Profile Picture" id="avatar-upload" />
   <input type="submit" value="Update" />
 </form>
 <% }else{ %>
@@ -50,3 +50,21 @@
 </form>
 <% } %> <% } %> <% for(post of postInfo) { %> <% if(profile_user.id==post.user){
 %> <%- include("_post") -%> <% } %> <% } %>
+
+<script>
+  var uploadField = document.getElementById("avatar-upload");
+
+uploadField.onchange = function(avatar) {
+    if(this.files[0].size > 1048576){
+      new Noty({
+                        theme: 'relax',
+                        text: "Please upload an image less than 1 MB",
+                        type: 'error',
+                        layout: 'topRight',
+                        timeout: 1500
+
+                    }).show();
+       this.value = "";
+    };
+};  
+</script>
