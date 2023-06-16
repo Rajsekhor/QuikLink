@@ -7,9 +7,9 @@
     <% if(locals.user){ %>
       <h4>Posts</h4>
       <form action="/posts/create" id="new-post-form" method="post">
-        <textarea name="content" cols="30" rows="3" placeholder="Type here..." required></textarea>
+        <textarea name="content" id="postInput" cols="30" rows="3" placeholder="Type here..." required></textarea>
         <input type="file" name="postImage" accept="image/*">
-        <input type="submit" value="Post" />
+        <input type="submit" onclick="clearPostInput('postInput')" value="Post" />
       </form>
       <% } %>
         <div id="posts-list-container">
@@ -61,6 +61,7 @@
           <a href="/chat/private-chat/">Private Chat</a>
         </p>
 </div>
+<script src="/js/posts_edit.js"></script>
 <script src="/js/home_post_comments.js"></script>
 <script src="/js/home_posts.js"></script>
 <script src="/js/toggle_likes.js"></script>
@@ -69,6 +70,26 @@
     let self = this;
     let toggleLike = new ToggleLike(self);
   });
+</script>
+<script>
+  function clearPostInput(inputId){
+    setTimeout(function () {
+      let inputElement = document.getElementById(inputId);
+      if (inputElement) {
+        inputElement.value = '';
+      }
+    }, 100);
+  }
+</script>
+<script>
+  function clearChatRoomContent(inputId){
+    setTimeout(function () {
+      let inputElement = document.getElementById(inputId);
+      if (inputElement) {
+        inputElement.value = '';
+      }
+    }, 100);
+  }
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.6.1/socket.io.js"
   integrity="sha512-xbQU0+iHqhVt7VIXi6vBJKPh3IQBF5B84sSHdjKiSccyX/1ZI7Vnkt2/8y8uruj63/DVmCxfUNohPNruthTEQA=="

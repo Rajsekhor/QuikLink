@@ -84,3 +84,11 @@ module.exports.destroy = async function (req, res) {
     return res.redirect("back");
   }
 };
+
+
+module.exports.update = function(req,res){
+  console.log(req.params.id,req.body)
+    Post.findByIdAndUpdate(req.params.id,req.body,function(error,post){
+      return res.redirect("back");
+    })
+}

@@ -14,6 +14,7 @@ module.exports.profile_plain = async function (req, res) {
       title: "User Profile",
       profile_user: user,
       userSearch: userSearch,
+      postInfo:postInfo,
     });
   });
 };

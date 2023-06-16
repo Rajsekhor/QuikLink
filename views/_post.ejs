@@ -6,9 +6,13 @@
         >Delete</a
       >
     </small>
-    <% } %> <% if(post.postImage){ %>
+    <% } %> 
+    <% if(post.postImage){ %>
     <img src="<%= post.postImage %>" alt="Post Image" width="200px" />
-    <% } %> <%= post.content %>
+    <% } %> 
+    <div id="postContent-<%=post._id%>">
+      <%= post.content %>
+    </div>
     <small>
       <% if (locals.user){ %>
       <small>
@@ -17,9 +21,14 @@
           class="toggle-like-button"
           data-likes="<%= post.likes.length %>"
           href="/likes/toggle/?id=<%=post._id%>&type=Post"
-          ><i class="fa fa-thumbs-up"><%= post.likes.length %> Likes</i></a
         >
+          <i class="fa fa-thumbs-up"><%= post.likes.length %> Likes</i>
+        </a>
       </small>
+      <small>
+        <button onclick="openPostEditor('<%= post._id %>')">edit</button>
+      </small>
+      <div id="editing-post-segment-<%=post._id%>"></div>
       <% } else { %>
       <small id="like-button2"> <%=post.likes.length %> Likes </small>
       <% } %>
@@ -37,15 +46,14 @@
       <input
         type="text"
         name="content"
+        class="commentContent"
         placeholder="Type Here to add comment..."
         required
       />
       <input type="hidden" name="post" value="<%= post._id %>" />
-      <input type="submit" value="Add Comment" />
+      <input type="submit" onclick="clearCommentContent('commentContent')" value="Add Comment" />
     </form>
-
     <% } %>
-
     <div class="post-comments-list">
       <ul id="post-comments-<%= post._id %>">
         <% for (comment of post.comments){%> <%- include('_comment') -%> <%} %>
@@ -53,3 +61,50 @@
     </div>
   </div>
 </li>
+<script>
+  closePostEditor = (post) => {
+    let postEditor = document.getElementById(`editing-post-segment-${post}`);
+    postEditor.innerHTML = "";
+  };
+
+  openPostEditor = (post) => {
+    let postEditor = document.getElementById(`editing-post-segment-${post}`);
+    let inputId = "postEditContent-" + post;
+    let postEditorDOM = `
+      <div id="editor-${post}">
+        <form action="/posts/update/${post}" id="postEdit-${post}" method="post">
+          <input type="text" name="content" id="${inputId}" />
+          <input type="submit" onclick="clearEditPostContent('${inputId}', '${post}')" value="Save Changes">
+        </form>
+        <button onclick="closePostEditor('${post}')">Cancel</button>
+      </div>
+    `;
+    postEditor.innerHTML = postEditorDOM;
+    new editPost(post);
+  };
+
+  function clearEditPostContent(inputId, post) {
+    setTimeout(function () {
+      let inputElement = document.getElementById(inputId);
+      if (inputElement) {
+        inputElement.value = '';
+      }
+      let postEditor = document.getElementById(`editing-post-segment-${post}`);
+      if (postEditor) {
+        postEditor.innerHTML = "";
+      }
+    }, 100);
+  }
+  function clearCommentContent(inputClass) {
+    setTimeout(function () {
+      let inputElements = document.getElementsByClassName(inputClass);
+      if (inputElements.length > 0) {
+        for (let i = 0; i < inputElements.length; i++) {
+          inputElements[i].value = '';
+        }
+      }
+    }, 100);
+  }
+</script>
+
+

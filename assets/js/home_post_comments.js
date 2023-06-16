@@ -80,9 +80,7 @@ class PostComments {
 
 
     deleteComment(deleteLink) {
-        console.log("Inside Delete",deleteLink)
         $(deleteLink).click(function (e) {
-            console.log("Inside Delete e",e)
             e.preventDefault();
 
             $.ajax({
